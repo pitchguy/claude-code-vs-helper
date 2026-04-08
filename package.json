@@ -1,0 +1,97 @@
+{
+  "name": "claude-code-helper",
+  "displayName": "Claude Code Helper",
+  "description": "Insert selected code into Claude Code dialog - right-click context menu to send code to Claude Code",
+  "version": "0.0.1",
+  "publisher": "claude-code-helper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/claude-code-vs-helper"
+  },
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=18"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeCodeHelper.insertToClaudeCode",
+        "title": "插入到 Claude Code"
+      },
+      {
+        "command": "claudeCodeHelper.clearPipeFile",
+        "title": "清空 Claude Code 管道文件"
+      },
+      {
+        "command": "claudeCodeHelper.openPipeLocation",
+        "title": "打开管道文件位置"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "claudeCodeHelper.insertToClaudeCode",
+          "when": "editorTextFocus && editorHasSelection",
+          "group": "claudeCodeHelper@1"
+        }
+      ],
+      "editor/context/menu/claudeCodeHelper": [
+        {
+          "command": "claudeCodeHelper.clearPipeFile",
+          "when": "editorTextFocus",
+          "group": "claudeCodeHelper@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "claudeCodeHelper.insertToClaudeCode",
+        "key": "cmd+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Code Helper",
+      "properties": {
+        "claudeCodeHelper.insertMode": {
+          "type": "string",
+          "enum": ["clipboard", "pipe", "both"],
+          "default": "clipboard",
+          "description": "插入方式：'clipboard' 复制到剪贴板，'pipe' 写入管道文件，'both' 两者都做"
+        },
+        "claudeCodeHelper.pipeFilePath": {
+          "type": "string",
+          "default": "",
+          "description": "自定义管道文件路径（留空使用系统临时目录）"
+        },
+        "claudeCodeHelper.pipeSeparator": {
+          "type": "string",
+          "default": "────────────",
+          "description": "管道文件中的分隔符"
+        },
+        "claudeCodeHelper.includeTimestamp": {
+          "type": "boolean",
+          "default": true,
+          "description": "在管道文件中包含时间戳"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.0",
+    "typescript": "^5.3.0"
+  }
+}
